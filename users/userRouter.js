@@ -1,6 +1,7 @@
 const express = require('express');
 const router = express.Router('express');
 const db = require('../users/userDb');
+const validateUser = require('../middleware/validateUser');
 
 // get all users
 router.get('/', (req, res) => {
@@ -12,9 +13,18 @@ router.get('/', (req, res) => {
         });
 });
 
-// router.post('/', (req, res) => {
-
-// });
+// add new user
+router.post('/', validateUser, (req, res) => {
+    const userInfo = req.body;
+    db.insert(userInfo)
+        .then(user => {
+            res.status(201).json(user);
+        })
+        .catch(err => {
+            console.log('add user', err);
+            res.status(500).json({ error: "Cannot add user." });
+        });
+});
 
 // get user by id
 router.get('/:id', (req, res) => {
@@ -51,14 +61,11 @@ router.get('/:id', (req, res) => {
 // });
 
 //custom middleware
-
 // function validateUserId(req, res, next) {
 
 // };
 
-// function validateUser(req, res, next) {
 
-// };
 
 // function validatePost(req, res, next) {
 
