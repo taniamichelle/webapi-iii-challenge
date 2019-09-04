@@ -16,10 +16,6 @@ server.get('/', (req, res) => {
 // use middleware locally
 server.use('/api/users', userRouter);
 
-// use custom middleware locally
-// server.use('/users', validateUser, validateUserId, userRouter);
-// server.use('/posts', validatePost, postRouter);
-
 // custom middleware
 function logger(req, res, next) {
   console.log(

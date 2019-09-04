@@ -44,13 +44,43 @@ router.get('/:id', (req, res) => {
         });
 });
 
-// router.delete('/:id', (req, res) => {
+// delete user by id
+router.delete('/:id', (req, res) => {
+    const { id } = req.params;
+    db.remove(id)
+        .then(removed => {
+            if (removed) {
+                res.status(204).end();
+            } else {
+                res.status(404).json({ error: "User with that id does not exist." })
+            }
+        })
+        .catch(err => {
+            console.log(err);
+            res.status(500).json({ error: "Could not delete user." });
+        });
+});
 
-// });
-
-// router.put('/:id', (req, res) => {
-
-// });
+// update user by id
+router.put('/:id', (req, res) => {
+    const { id } = req.params;
+    const { changes } = req.body;
+    if (!changes) {
+        return res.status(400).json({ error: "Please add changes." });
+    }
+    db.update(id, { changes })
+        .then(updated => {
+            if (updated) {
+                getUserPosts(id);
+            } else {
+                res.status(404).json({ error: "User with that id does not exist." });
+            }
+        })
+        .catch(err => {
+            console.log('update user', err);
+            res.status(500).json({ error: "Could not update user." });
+        });
+});
 
 // router.get('/:id/posts', (req, res) => {
 
@@ -61,9 +91,6 @@ router.get('/:id', (req, res) => {
 // });
 
 //custom middleware
-// function validateUserId(req, res, next) {
-
-// };
 
 
 
