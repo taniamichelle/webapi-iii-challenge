@@ -1,23 +1,19 @@
 const express = require('express');
 
-// import userRouter
-const userRouter = require('./users/userRouter');
-
 const server = express();
-// use express built-in middleware globally 
-server.use(express.json());
-server.use(logger);
 
-// route handlers
+server.use(express.json()); // use express built-in middleware globally 
+server.use(logger); // use custom middleware globally
+
+const userRouter = require('./users/userRouter'); // import userRouter
+server.use('/api/users', userRouter); // apply userRouter middleware
+
 server.get('/', (req, res) => {
   res.send(`<h2>Let's write some middleware!</h2>`)
 });
 
-// use middleware locally
-server.use('/api/users', userRouter);
-
-// custom middleware
-function logger(req, res, next) {
+// custom global middleware
+function logger(req, res, next) { // req + res are objects and next is a cb function
   console.log(
     `[${new Date().toISOString()}] ${req.method} to ${req.url} from ${req.get(
       'Origin'
@@ -26,6 +22,5 @@ function logger(req, res, next) {
 
   next();
 }
-
 
 module.exports = server;
