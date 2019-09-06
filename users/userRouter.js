@@ -1,9 +1,13 @@
 const express = require('express');
+const User = require('../users/userDb'); // import userDb
+const Post = require('../posts/postDb'); // import postDb
+
 const router = express.Router('express');
-const User = require('../users/userDb');
-const Post = require('../posts/postDb');
+
+// import middleware
 const validateUser = require('../middleware/validateUser');
 const validateUserId = require('../middleware/validateUserId');
+const validatePost = require('../middleware/validatePost');
 
 // get all users
 router.get('/', (req, res) => {

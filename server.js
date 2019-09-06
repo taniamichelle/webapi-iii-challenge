@@ -8,6 +8,8 @@ server.use(logger); // use custom middleware globally
 const userRouter = require('./users/userRouter'); // import userRouter
 server.use('/api/users', userRouter); // apply userRouter middleware
 
+const postRouter = require('./posts/postRouter'); // import postRouter
+server.use('/api/posts', postRouter); // apply postRouter middleware
 server.get('/', (req, res) => {
   res.send(`<h2>Let's write some middleware!</h2>`)
 });
