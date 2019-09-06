@@ -1,4 +1,4 @@
-const express = 'express';
+const express = require('express');
 
 const Post = require('../posts/postDb'); // import postDb
 
